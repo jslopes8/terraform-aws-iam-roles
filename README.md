@@ -11,7 +11,7 @@ Example de uso do module
 
 ```hcl
 module "iam_role" {
-    source = "git@github.com:jslopes8/terraform-aws-iam-roles.git?rev=v1.0"
+    source = "git@github.com:jslopes8/terraform-aws-iam-roles.git?ref=v1.0"
 
     name        = "test_role"
     description = "role test "
