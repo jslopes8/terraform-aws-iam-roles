@@ -7,23 +7,29 @@ O codigo irá prover os seguintes recursos
 * [IAM role policy Attachment](https://www.terraform.io/docs/providers/aws/r/iam_role_policy_attachment.html)
 
 ## Usage
-Example de criação usando o module.
+Example de uso do module
 
 ```hcl
-module "role_account_external" {
-    source = "git@gitlab.uoldiveo.intranet:ump/devtools/terraform-aws-modules/terraform-aws-iam_role-account-external.git?ref=v1.2"
+module "iam_role" {
+    source = "git@github.com:jslopes8/terraform-aws-iam-roles.git?rev=v1.0"
 
-    name        = "CompassoUOL-MGMT-Cost"
-    description = "CloudHealth Compasso UOL"
+    name        = "test_role"
+    description = "role test "
 
-    policy  = data.aws_iam_policy_document.policy_doc.json
-    path    = "/"
-    #force_detach_policies   =
-    #max_session_duration    = 
-
-    # Specify accounts that can use this role
-    account_id  = "454464851268"
-    external_id = "8745c229b2d2f7e2d0b6444b0d390f"
+    assume_role_policy = [
+        {
+            sid = "1"
+            actions = [
+                "sts:AssumeRole"
+            ]
+            principals   = {
+                type        = "Service"
+                identifiers = [ 
+                    "ec2.amazonaws.com"
+                ]
+            }
+        } 
+    ]
 
     # Tags
     default_tags = {
@@ -35,37 +41,17 @@ module "role_account_external" {
 
 ```
 
-Para o `data.aws_iam_policy_document.policy_doc.json` é esperado o bloco com o conteudo das politicas.
-
-Exemplo
-```hcl
-data "aws_iam_policy_document" "policy_doc" {
-    statement {
-        sid = "AllowIAM"
-        effect = "Allow"
-        actions = [
-            "iam:List*",
-            "iam:Get*",
-            "iam:GenerateCredentialReport",
-        ]
-        resources = [
-            "*"
-        ]
-    }
-}
-```
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Variables Inputs
 | Name | Description | Required | Type | Default |
-| ---- | ----------- | --------- | ---- | ------- |
-| name | The name of the role and policy | yes | `string` | `" "` |
-| description | The description of the role | yes | `string` | `" "` |
-| path | The path to the role. See IAM Identifiers for more information.  | no | `string` | `/` |
-| force_detach_policies | Specifies to force detaching any policies the role has before destroying it | no | `bool` | `false` |
-| max_session_duration | The maximum session duration (in seconds) that you want to set for the specified role | no | `number` | `3600` |
-| account_id | The Account ID External   | yes | `string` | `" "` |
-| external_id | The ID external condition for permission | yes | `string` | `" "` |
+| ---- | ----------- | -------- | ---- | ------- |
+| name | The name of the role and policy | `yes` | `string` | ` ` |
+| description | The description of the role | `yes` | `string` | ` ` |
+| path | The path to the role. See IAM Identifiers for more information.  | `no` | `string` | `/` |
+| force_detach_policies | Specifies to force detaching any policies the role has before destroying it | `no` | `bool` | `false` |
+| max_session_duration | The maximum session duration (in seconds) that you want to set for the specified role | `no` | `number` | `3600` |
+| assume_role_policy | The policy that grants an entity permission to assume the role. | `yes` | `map` | `[ ]` |
+| iam_policy | The policy document. | `yes` | `map` | `[ ]` |
 | default_tags | Key-value mapping of tags for the IAM role | yes | `map(string)` | `{ }` |
 
 ## Variable Outputs
