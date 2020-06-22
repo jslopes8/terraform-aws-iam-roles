@@ -33,9 +33,8 @@ module "iam_role" {
 
     # Tags
     default_tags = {
-        ApplicationRole = "CloudHealth Cost Management"
-        Owner           = "COMPASSO UOL"
-        Customer        = "PagSeguro"
+        ApplicationRole = "Portal Web"
+        Owner           = "Tirulipa da Silva"
     }
 }
 
