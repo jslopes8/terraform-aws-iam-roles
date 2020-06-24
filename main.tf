@@ -17,7 +17,7 @@ resource "aws_iam_role_policy_attachment" "attach_policy" {
   policy_arn = aws_iam_policy.policy_document.arn
 }
 resource "aws_iam_role_policy_attachment" "main" {
-  count = var.create ? var.import_managed_policies : 0
+  count = var.create ? length(var.import_managed_policies) : 0
 
   role       = aws_iam_role.main.id
   policy_arn = lookup(var.import_managed_policies[count.index], "policies_arn", null)
