@@ -12,9 +12,10 @@ resource "aws_iam_role" "main" {
 }
 
 resource "aws_iam_role_policy_attachment" "attach_policy" {
+  count   = var.create ? length(var.iam_policy) : 0
 
   role       = aws_iam_role.main.id
-  policy_arn = aws_iam_policy.policy_document.arn
+  policy_arn = aws_iam_policy.policy_document.0.arn
 }
 resource "aws_iam_role_policy_attachment" "main" {
   count = var.create ? length(var.import_managed_policies) : 0
@@ -24,6 +25,7 @@ resource "aws_iam_role_policy_attachment" "main" {
 }
 
 resource "aws_iam_policy" "policy_document" {
+    count   = var.create ? length(var.iam_policy) : 0
 
     name    = "${var.name}RolePolicy"
     policy  = data.aws_iam_policy_document.policy_document.json
