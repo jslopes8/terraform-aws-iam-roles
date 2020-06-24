@@ -25,6 +25,10 @@ variable "iam_policy" {
     type    = any
     default = []
 }
+variable "import_managed_policies" {
+    type    = any
+    default = []
+}
 variable "assume_role_policy" {
     type    = any
     default = []
