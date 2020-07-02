@@ -37,7 +37,9 @@ variable "default_tags" {
     type    = map(string)
     default = {}
 }
-
-
+variable "use_num_suffix" {
+    type        = bool
+    default     = false
+}
 
 
