@@ -98,9 +98,9 @@ data "aws_iam_policy_document" "policy_document" {
 #
 # IAM Role Policy
 resource "aws_iam_role_policy" "main" {
-    count   = var.create ? length(var.iam_policy) : 0
+    count   = var.create ? 1 : 0
 
-    name      = length(var.iam_policy) > 1 || var.use_num_suffix ? format("%s-%d", "${var.name}-RolePolicy", count.index + 1) : "${var.name}-RolePolicy"
+    name      = length(var.iam_policy) > 1 || var.use_num_suffix ? format("%s-%d", "${var.name}-Policy", count.index + 1) : "${var.name}-Policy"
     role      = aws_iam_role.main.0.id
     policy    = element(data.aws_iam_policy_document.policy_document[*].json, count.index)
 }
